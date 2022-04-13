@@ -18,7 +18,7 @@ contract Wallet {
     /*
     * Verify if current time (block.timestamp) is greater time timeToWait
     */
-    function checkTransferEligible(AllowanceReceiver memory _allowanceReceiver) public view returns(bool) {
+    function checkTransferEligible(AllowanceReceiver memory _allowanceReceiver) internal view returns(bool) {
         return (_allowanceReceiver.transferTimestamp.length == 0 || 
         _allowanceReceiver.transferTimestamp[_allowanceReceiver.transferTimestamp.length] - block.timestamp >= _allowanceReceiver.timeToWait);
     }
