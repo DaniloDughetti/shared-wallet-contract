@@ -9,8 +9,10 @@ pragma solidity ^0.8.13;
 import "./OwnerV2.sol";
 import "./WalletV2.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/math/SafeMath.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Context.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol";
 
-contract SharedWalletV2 is OwnerV2, WalletV2 {
+contract SharedWalletV2 is Ownable, WalletV2 {
     
     using SafeMath for uint;
     mapping(address => uint) public wallets;
@@ -20,19 +22,19 @@ contract SharedWalletV2 is OwnerV2, WalletV2 {
     event MoneyReceived(address, uint);
     event AllowanceReceiverInfo(AllowanceReceiver);
 
-    function fullWithdraw(address payable _to, uint _amount) public OnlyOwner Pausable {
+    function fullWithdraw(address payable _to, uint _amount) public onlyOwner {
         require(_amount <= balance, "Operation denied: Not enough balance");
         _to.transfer(_amount);
     }
 
-    function myBalance() public view Pausable returns(uint) {
+    function myBalance() public view returns(uint) {
         return wallets[msg.sender];
     }
 
     /*
     * Generic deposit function
     */
-    function receiveMoney() public payable Pausable {
+    function receiveMoney() public payable {
         assert(msg.value.add(balance) >= balance);
         balance = balance.add(msg.value);
         wallets[msg.sender] = wallets[msg.sender].add(msg.value);
@@ -87,6 +89,14 @@ contract SharedWalletV2 is OwnerV2, WalletV2 {
         emit AllowanceReceiverInfo(allowanceReceivers[msg.sender]);
     }
  
+    /*
+    * Override OpenZeppelin Ownable function to renounce at owner address
+    * override keyword necessary
+    */
+    function renounceOwnership() public override view onlyOwner {
+        revert("Operation denied");
+    }
+
     receive() external payable {
         receiveMoney();
     }
