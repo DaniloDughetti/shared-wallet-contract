@@ -5,7 +5,7 @@ pragma solidity ^0.8.13;
 * date: 13/04/2022
 * SPDX-License-Identifier: MIT
 */
-contract Owner {
+contract OwnerV1 {
 
     address payable public owner;
     bool public isPaused;

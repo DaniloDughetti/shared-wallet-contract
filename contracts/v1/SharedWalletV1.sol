@@ -6,11 +6,11 @@ pragma solidity ^0.8.13;
 * SPDX-License-Identifier: MIT
 */
 
-import "./Owner.sol";
-import "./Wallet.sol";
+import "./OwnerV1.sol";
+import "./WalletV1.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/math/SafeMath.sol";
 
-contract SharedWallet is Owner, Wallet {
+contract SharedWalletV1 is OwnerV1, WalletV1 {
     
     using SafeMath for uint;
     mapping(address => uint) public wallets;

@@ -1,3 +1,5 @@
 contracts/artifacts/
+contracts/v1/artifacts/
+contracts/v2/artifacts/
 /.deps/
 /ipfs/
